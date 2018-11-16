@@ -16,11 +16,11 @@ class MushroomWorldSpider(CrawlSpider):
       )
 
     def parse_item(self, response):
-        name = response.css(".caption ::text")
-        description = response.css(".longtextus ::text")
-        family = response.css(".textus:nth-child(0) ::text")
-        location = response.css(".textus:nth-child(1) ::text")
-        dimensions = response.css(".textus:nth-child(2) ::text")
-        edibility = response.css(".textus:nth-child(3) ::text")
+        name = response.css(".caption b ::text").extract_first().strip()
+        description = response.css(".longtextus ::text").extract_first()
+        family = response.css(".textus ::text").extract_first()
+        location = response.xpath(".//textus[1]/text()").extract()
+        dimensions = response.css("#mushroom-list:nth-child(2) ::text").extract()
+        edibility = response.css("#mushroom-list:nth-child(3) ::text").extract()
         yield MushroomWorldItem(name=name, description=description, family=family,
                                     location=location, dimensions=dimensions, edibility=edibility)
